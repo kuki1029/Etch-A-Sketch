@@ -1,0 +1,3 @@
+-Create good font for title
+-add all buttons
+-then work on the grid.
