@@ -21,7 +21,8 @@
   <!-- This is the row of buttons to control the colors and other options -->
   <div class="row">
       <div class="col justify-content-center">
-      <button aria-pressed="true" type="button" class="btn btn-outline-dark mx-2">Size</button>
+        <!-- Modal Button for size -->
+      <button aria-pressed="true" data-bs-toggle="modal" data-bs-target="#sizeModal" type="button" class="btn btn-outline-dark mx-2">Size</button>
       <button type="button" class="btn btn-outline-dark mx-2">Black</button>
       <button type="button" class="btn btn-outline-dark mx-2">Rainbow</button>
       <button type="button" class="btn btn-outline-dark mx-2">Pick A Color</button>
@@ -32,7 +33,7 @@
   <!-- This is the main drawing grid itself. -->
   <div class="row">
     <div class="col">
-      <canvas id="canvas" width="220px" height="220px"></canvas>
+      <canvas id="canvas" width="620px" height="620px"></canvas>
     </div>
   </div>
   
@@ -44,7 +45,29 @@
     </footer>
 </div>
 
-
+<!-- Modal -->
+<div class="modal fade" id="sizeModal" tabindex="-1" aria-labelledby="sizeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sizeModalLabel">Enter the number of boxes:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="number_boxes" class="col-form-label"></label>
+            <input type="number" value="15" class="form-control" id="number_boxes">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 </body>

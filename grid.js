@@ -1,24 +1,38 @@
+// Height n Width are fixed. Box sizing will change for more boxes
 // Box width
-var bw = 800;
+var bw = 600;
 // Box height
-var bh = 800;
+var bh = 600;
 // Padding
-var p = 10;
+var padding = 10;
 
+
+
+
+function change_grid() {
+    
+}
+
+
+
+// This function will draw the grid
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-function drawBoard(){
-    for (var x = 0; x <= bw; x += 40) {
-        context.moveTo(0.5 + x + p, p);
-        context.lineTo(0.5 + x + p, bh + p);
+function drawBoard(number_of_boxes){
+    var box_size_px = bw / number_of_boxes
+    // The plus one for the middle conditions is to deal with any rounding issues and sorts
+    for (var x = 0; x <= bw+1; x += box_size_px) {
+        context.moveTo(0.5 + x + padding, padding);
+        context.lineTo(0.5 + x + padding, bh + padding);
     }
-
-    for (var x = 0; x <= bh; x += 40) {
-        context.moveTo(p, 0.5 + x + p);
-        context.lineTo(bw + p, 0.5 + x + p);
+    for (var x = 0; x <= bh+1; x += box_size_px) {
+        context.moveTo(padding, 0.5 + x + padding);
+        context.lineTo(bw + padding, 0.5 + x + padding);
     }
     context.strokeStyle = "black";
     context.stroke();
 }
 
-drawBoard();
+// 15 here is just a default starting value for the number of boxes. This can be
+// updated by the user on the app
+drawBoard(15);
