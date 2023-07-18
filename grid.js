@@ -18,7 +18,7 @@ sizeButton.addEventListener("click", function(e) {
     e.preventDefault();
     let boxes = document.getElementById("number_boxes");
     
-    if (boxes.value == "") {
+    if (boxes.value <= 0) {
       alert("Please enter a number greater than 0.")
     } 
     
