@@ -8,6 +8,7 @@ var padding = 10;
 // Variables for canvas
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+const rect = canvas.getBoundingClientRect()
 
 
 
@@ -21,12 +22,22 @@ sizeButton.addEventListener("click", function(e) {
     if (boxes.value <= 0) {
       alert("Please enter a number greater than 0.")
     } 
-    
+
     else {
         drawBoard(boxes.value)
-        $('#sizeModal').modal('hide');
     }
   });
+
+var right = 2;
+// Checks for mouse click
+canvas.addEventListener('mousedown', function (e){
+    // Simpler to check if not right button as left is denoted in diff ways in diff browsers
+    if(e.button != right){
+        coords = getCursorPosition(e)
+
+
+    }
+}, false);
 
 
 
@@ -51,3 +62,9 @@ function drawBoard(number_of_boxes){
 // 15 here is just a default starting value for the number of boxes. This can be
 // updated by the user on the app
 drawBoard(15);
+
+function getCursorPosition(event) {
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    return [x, y]
+}
