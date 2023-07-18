@@ -5,22 +5,37 @@ var bw = 600;
 var bh = 600;
 // Padding
 var padding = 10;
+// Variables for canvas
+var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
 
 
 
+// Here we add logic for the size modal
+let sizeButton = document.getElementById("sizeButton");
 
-function change_grid() {
+sizeButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    let boxes = document.getElementById("number_boxes");
     
-}
+    if (boxes.value == "") {
+      alert("Please enter a number greater than 0.")
+    } 
+    
+    else {
+        drawBoard(boxes.value)
+        $('#sizeModal').modal('hide');
+    }
+  });
 
 
 
 // This function will draw the grid
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
 function drawBoard(number_of_boxes){
+    context.clearRect(0, 0, canvas.width, canvas.height);
     var box_size_px = bw / number_of_boxes
     // The plus one for the middle conditions is to deal with any rounding issues and sorts
+    context.beginPath();
     for (var x = 0; x <= bw+1; x += box_size_px) {
         context.moveTo(0.5 + x + padding, padding);
         context.lineTo(0.5 + x + padding, bh + padding);

@@ -54,16 +54,16 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="sizeForm">
           <div class="mb-3">
-            <label for="number_boxes" class="col-form-label"></label>
+            <label for="number_boxes" class="col-form-label">Warning: This will erase all your current art.</label>
             <input type="number" value="15" class="form-control" id="number_boxes">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Submit</button>
+        <button type="button" id="sizeButton" data-bs-dismiss="modal" class="btn btn-primary">Submit</button>
       </div>
     </div>
   </div>
