@@ -3,14 +3,12 @@
 var bw = 600;
 // Box height
 var bh = 600;
-// Padding
 var padding = 10;
+// Default for starting number of boxes
+var num_boxes = 15;
 // Variables for canvas
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
-const rect = canvas.getBoundingClientRect()
-
-
 
 // Here we add logic for the size modal
 let sizeButton = document.getElementById("sizeButton");
@@ -18,12 +16,11 @@ let sizeButton = document.getElementById("sizeButton");
 sizeButton.addEventListener("click", function(e) {
     e.preventDefault();
     let boxes = document.getElementById("number_boxes");
-    
     if (boxes.value <= 0) {
       alert("Please enter a number greater than 0.")
     } 
-
     else {
+        num_boxes = boxes.value
         drawBoard(boxes.value)
     }
   });
@@ -34,8 +31,24 @@ canvas.addEventListener('mousedown', function (e){
     // Simpler to check if not right button as left is denoted in diff ways in diff browsers
     if(e.button != right){
         coords = getCursorPosition(e)
+        console.log(coords)
+        // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
+        coords[0] -= padding
+        coords[1] -= padding
 
-
+        // First we get the position of where the mouse is and on which block
+        // To do this, we just use some simple math and geometry
+        var box_size = bw / num_boxes
+        block_x = Math.floor(coords[0] / box_size) * box_size
+        block_y = Math.floor(coords[1] / box_size) * box_size
+        console.log(block_x)
+        // Here we can draw the rectange
+        // Padding for each box. We add +1 as it shouldn't overlap with the grid
+        const p_box = padding + 1
+        const b_size = box_size - 1
+        context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
+        context.fillStyle = "black";
+        context.fill();
     }
 }, false);
 
@@ -59,11 +72,12 @@ function drawBoard(number_of_boxes){
     context.stroke();
 }
 
-// 15 here is just a default starting value for the number of boxes. This can be
-// updated by the user on the app
-drawBoard(15);
+drawBoard(num_boxes);
 
+
+// Returns the coordinates for the cursor relative to the canvas
 function getCursorPosition(event) {
+    const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
     return [x, y]
