@@ -91,10 +91,12 @@ var mousePosition, holding;
 function myInterval() {
 var setIntervalId = setInterval(function() {
     if (!holding) clearInterval(setIntervalId);
-    coords = getCursorPosition(mousePosition)
-
-    color_square(coords)
-}, 20); // 50 is the wait time between each event in ms
+    if (holding) {
+        coords = getCursorPosition(mousePosition)
+        color_square(coords)
+    }
+    
+}, 100); // 50 is the wait time between each event in ms
 }
 
 // All these mouse functions deal with checking if the mouse is pressed down
@@ -106,10 +108,8 @@ canvas.addEventListener('mousedown', function(e) {
     }
 })
 canvas.addEventListener('mouseup', function(e) {
-    if(e.button != right){
-        holding = false;
-        myInterval();
-    }
+    holding = false;
+    myInterval();
 })
 canvas.addEventListener('mouseleave', function() {
     holding = false;
