@@ -27,38 +27,97 @@ sizeButton.addEventListener("click", function(e) {
 
 var right = 2;
 // Checks for mouse click
-canvas.addEventListener('mousedown', function (e){
-    // Simpler to check if not right button as left is denoted in diff ways in diff browsers
-    if(e.button != right){
-        coords = getCursorPosition(e)
+// canvas.addEventListener('mousedown', function (e){
+//     // Simpler to check if not right button as left is denoted in diff ways in diff browsers
+//     if(e.button != right){
+//         coords = getCursorPosition(e)
         
-        // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
-        coords[0] -= padding
-        coords[1] -= padding
+//         // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
+//         coords[0] -= padding
+//         coords[1] -= padding
 
-        // Check if mouse is outside grid but still on canvas
-        if ((coords[0] < 0) || (coords[1] < 0)) {
-            return;
-        }
-        else if ((coords[0] >bw) || (coords[1] > bh)) {
-            return;
-        }
-        // First we get the position of where the mouse is and on which block
-        // To do this, we just use some simple math and geometry
-        var box_size = bw / num_boxes
-        block_x = Math.floor(coords[0] / box_size) * box_size
-        block_y = Math.floor(coords[1] / box_size) * box_size
-        // Here we can draw the rectange
-        // Padding for each box. We add +1 as it shouldn't overlap with the grid
-        const p_box = padding + 1
-        const b_size = box_size - 1
-        context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
-        context.fillStyle = "black";
-        context.fill();
+//         // Check if mouse is outside grid but still on canvas
+//         if ((coords[0] < 0) || (coords[1] < 0)) {
+//             return;
+//         }
+//         else if ((coords[0] >bw) || (coords[1] > bh)) {
+//             return;
+//         }
+//         // First we get the position of where the mouse is and on which block
+//         // To do this, we just use some simple math and geometry
+//         var box_size = bw / num_boxes
+//         block_x = Math.floor(coords[0] / box_size) * box_size
+//         block_y = Math.floor(coords[1] / box_size) * box_size
+//         // Here we can draw the rectange
+//         // Padding for each box. We add +1 as it shouldn't overlap with the grid
+//         const p_box = padding + 1
+//         const b_size = box_size - 1
+//         context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
+//         context.fillStyle = "black";
+//         context.fill();
+//     }
+// }, false);
+
+function color_square(coords) {
+    // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
+    coords[0] -= padding
+    coords[1] -= padding
+
+    // Check if mouse is outside grid but still on canvas
+    if ((coords[0] < 0) || (coords[1] < 0)) {
+        return;
     }
-}, false);
+    else if ((coords[0] >bw) || (coords[1] > bh)) {
+        return;
+    }
+    // First we get the position of where the mouse is and on which block
+    // To do this, we just use some simple math and geometry
+    var box_size = bw / num_boxes
+    block_x = Math.floor(coords[0] / box_size) * box_size
+    block_y = Math.floor(coords[1] / box_size) * box_size
+    // Here we can draw the rectange
+    // Padding for each box. We add +1 as it shouldn't overlap with the grid
+    const p_box = padding + 1
+    const b_size = box_size - 1
+    context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
+    context.fillStyle = "black";
+    context.fill();
+}
 
 
+var mousePosition, holding;
+
+// This function deals with the mouse being held down
+function myInterval() {
+var setIntervalId = setInterval(function() {
+    if (!holding) clearInterval(setIntervalId);
+    coords = getCursorPosition(mousePosition)
+
+    color_square(coords)
+}, 20); // 50 is the wait time between each event in ms
+}
+
+// All these mouse functions deal with checking if the mouse is pressed down
+// or released
+canvas.addEventListener('mousedown', function(e) {
+    if(e.button != right){
+        holding = true;
+        myInterval();
+    }
+})
+canvas.addEventListener('mouseup', function(e) {
+    if(e.button != right){
+        holding = false;
+        myInterval();
+    }
+})
+canvas.addEventListener('mouseleave', function() {
+    holding = false;
+    myInterval();
+})
+canvas.addEventListener('mousemove', function(e) {
+    mousePosition = e;
+})
 
 // This function will draw the grid
 function drawBoard(number_of_boxes){
