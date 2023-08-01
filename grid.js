@@ -10,8 +10,25 @@ var num_boxes = 15;
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var color = "#000000"
+
+// This function will initiazlie the grid array to contain a 2d array of white colors as 
+// that is the starting point with the initial size
+function initialize_gridInfo(sizeArray){
+    var gridArray = []
+    startColor = "#FFFFFF"
+    for (var i = 0; i < sizeArray; i++) {
+        var arr = []
+        for (var j = 0; j < sizeArray; j++) {
+            arr.push(startColor)
+        }
+        gridArray.push(arr)
+    }
+    return gridArray
+}
+
 // Stores all the color values for the grid so we can save in DB or update screen
-var gridInfo = []
+// This will be a 2D array aas that makes the most sense for this grid of colors
+var gridInfo = initialize_gridInfo(15);
 
 // Gets the color info from the color picker
 var backRGB = document.getElementById("color").value;
@@ -52,20 +69,24 @@ function color_square(coords) {
     // First we get the position of where the mouse is and on which block
     // To do this, we just use some simple math and geometry
     var box_size = bw / num_boxes
-    block_x = Math.floor(coords[0] / box_size) * box_size
-    block_y = Math.floor(coords[1] / box_size) * box_size
+    block_index_x = Math.floor(coords[0] / box_size)
+    block_index_y = Math.floor(coords[1] / box_size)
+    block_x = block_index_x * box_size
+    block_y = block_index_y * box_size
     // Here we can draw the rectange
-    // Padding for each box. We add +1 as it shouldn't overlap with the grid
+    // Padding for each box. We add some decimal amount as it shouldn't overlap with the grid
     const p_box = padding + 0.6
-    const b_size = box_size - 0.5
+    const b_size = box_size - 0.1
     context.beginPath();
     context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
     context.fillStyle = color;
     context.fill();
-    context.lineWidth = 0.5;
+    context.lineWidth = 1;
     context.strokeStyle = "black";
-    
     context.stroke();
+    // Now we store the box info into a grid array for later use
+    gridInfo[block_index_x][block_index_y] = color;
+    console.log(gridInfo)
 }
 
 
