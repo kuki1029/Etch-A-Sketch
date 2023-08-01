@@ -96,7 +96,7 @@ var setIntervalId = setInterval(function() {
         color_square(coords)
     }
     
-}, 100); // 50 is the wait time between each event in ms
+}, 25); // 50 is the wait time between each event in ms
 }
 
 // All these mouse functions deal with checking if the mouse is pressed down
