@@ -9,6 +9,17 @@ var num_boxes = 15;
 // Variables for canvas
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+var color = "#000000"
+// Stores all the color values for the grid so we can save in DB or update screen
+var gridInfo = []
+
+// Gets the color info from the color picker
+var backRGB = document.getElementById("color").value;
+// When color changes, will update the appropriate variable
+document.getElementById("color").onchange = function() {
+  backRGB = this.value;
+  color = backRGB;
+}
 
 // Here we add logic for the size modal
 let sizeButton = document.getElementById("sizeButton");
@@ -25,38 +36,6 @@ sizeButton.addEventListener("click", function(e) {
     }
   });
 
-var right = 2;
-// Checks for mouse click
-// canvas.addEventListener('mousedown', function (e){
-//     // Simpler to check if not right button as left is denoted in diff ways in diff browsers
-//     if(e.button != right){
-//         coords = getCursorPosition(e)
-        
-//         // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
-//         coords[0] -= padding
-//         coords[1] -= padding
-
-//         // Check if mouse is outside grid but still on canvas
-//         if ((coords[0] < 0) || (coords[1] < 0)) {
-//             return;
-//         }
-//         else if ((coords[0] >bw) || (coords[1] > bh)) {
-//             return;
-//         }
-//         // First we get the position of where the mouse is and on which block
-//         // To do this, we just use some simple math and geometry
-//         var box_size = bw / num_boxes
-//         block_x = Math.floor(coords[0] / box_size) * box_size
-//         block_y = Math.floor(coords[1] / box_size) * box_size
-//         // Here we can draw the rectange
-//         // Padding for each box. We add +1 as it shouldn't overlap with the grid
-//         const p_box = padding + 1
-//         const b_size = box_size - 1
-//         context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
-//         context.fillStyle = "black";
-//         context.fill();
-//     }
-// }, false);
 
 function color_square(coords) {
     // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
@@ -77,16 +56,21 @@ function color_square(coords) {
     block_y = Math.floor(coords[1] / box_size) * box_size
     // Here we can draw the rectange
     // Padding for each box. We add +1 as it shouldn't overlap with the grid
-    const p_box = padding + 1
-    const b_size = box_size - 1
+    const p_box = padding + 0.6
+    const b_size = box_size - 0.5
+    context.beginPath();
     context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
-    context.fillStyle = "black";
+    context.fillStyle = color;
     context.fill();
+    context.lineWidth = 0.5;
+    context.strokeStyle = "black";
+    
+    context.stroke();
 }
 
 
 var mousePosition, holding;
-
+var right = 2;
 // This function deals with the mouse being held down
 function myInterval() {
 var setIntervalId = setInterval(function() {
