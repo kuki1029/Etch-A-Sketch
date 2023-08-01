@@ -11,7 +11,7 @@ var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var color = "#000000"
 
-// This function will initiazlie the grid array to contain a 2d array of white colors as 
+// This function will initialize the grid array to contain a 2d array of white colors as 
 // that is the starting point with the initial size
 function initialize_gridInfo(sizeArray){
     var gridArray = []
@@ -28,7 +28,7 @@ function initialize_gridInfo(sizeArray){
 
 // Stores all the color values for the grid so we can save in DB or update screen
 // This will be a 2D array aas that makes the most sense for this grid of colors
-var gridInfo = initialize_gridInfo(15);
+var gridInfo = initialize_gridInfo(num_boxes);
 
 // Gets the color info from the color picker
 var backRGB = document.getElementById("color").value;
@@ -50,6 +50,7 @@ sizeButton.addEventListener("click", function(e) {
     else {
         num_boxes = boxes.value
         drawBoard(boxes.value)
+        gridInfo = initialize_gridInfo(num_boxes);
     }
   });
 
