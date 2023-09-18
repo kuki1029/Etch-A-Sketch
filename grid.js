@@ -28,23 +28,12 @@ document.getElementById("color").onchange = function() {
 
 // Here we add logic for the size modal
 let sizeButton = document.getElementById("sizeButton");
-
 sizeButton.addEventListener("click", function(e) {
-    e.preventDefault();
-    let boxes = document.getElementById("number_boxes");
-    if (boxes.value <= 0) {
-      alert("Please enter a number greater than 0.")
-    } 
-    else {
-        num_boxes = boxes.value
-        drawBoard(num_boxes)
-        gridInfo = initialize_gridInfo(num_boxes);
-    }
+    changeGridSize(e)
   });
 
 // Here we add logic for the size modal
 let topButton = document.getElementById("topButton");
-
 topButton.addEventListener("click", function(e) {
     e.preventDefault();
     // Clear the board but we have the colors saved still
@@ -53,7 +42,6 @@ topButton.addEventListener("click", function(e) {
     for (var i = 0; i < num_boxes; i++) {
         pos = { x: i, y: 0}
         color_new = gridInfo[0][i]
-        console.log(gridInfo)
         color_square_pos(pos, color_new)
     }
     gridInfo = initialize_gridInfo(num_boxes); // remove as this deletes all. 
@@ -199,4 +187,18 @@ function initialize_gridInfo(sizeArray){
         gridArray.push(arr)
     }
     return gridArray
+}
+
+// Helper function which clears the board and changes the number of squares in the grid
+function changeGridSize(e) {
+    e.preventDefault();
+    let boxes = document.getElementById("number_boxes");
+    if (boxes.value <= 0) {
+      alert("Please enter a number greater than 0.")
+    } 
+    else {
+        num_boxes = boxes.value
+        drawBoard(num_boxes)
+        gridInfo = initialize_gridInfo(num_boxes);
+    }
 }
