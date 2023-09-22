@@ -113,7 +113,7 @@
         </form>
         
         <div class="list-group list-group-flush">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#sizeModal" data-dismiss="modal" class="list-group-item list-group-item-action">New around here? Sign up!</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" data-dismiss="modal" class="list-group-item list-group-item-action">New around here? Sign up!</a>
           <a href="#" class="list-group-item list-group-item-action" >Forgot Password</a>
         </div>
       </div>
@@ -121,7 +121,38 @@
   </div>
 </div>
 
-
+<!-- Signup Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModalLabel">Signup for an account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="px-2 py-2" id="signupForm">
+          <div class="mb-3">
+            <label for="email" class="col-form-label">Email</label>
+            <input type="text" placeholder="Email" class="form-control" id="email">
+          </div>
+          <div class="mb-3">
+            <label for="username" class="col-form-label">Username</label>
+            <input type="text" placeholder="Username" class="form-control" id="username">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="col-form-label">Password</label>
+            <input type="text" placeholder="Password" class="form-control" id="password">
+          </div>
+          <button type="button" id="signupButton" data-bs-dismiss="modal" class="btn btn-primary">Sign Up</button>
+        </form>
+        <div class="list-group list-group-flush">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-dismiss="modal" class="list-group-item list-group-item-action">Already signed up? Log in!</a>
+          <a href="#" class="list-group-item list-group-item-action" >Forgot Password</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 <script src="grid.js"></script>
