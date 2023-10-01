@@ -10,6 +10,7 @@ var num_boxes = 15;
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var color = "#000000"
+var borderless = false;
 
 // Stores all the color values for the grid so we can save in DB or update screen
 // This will be a 2D array aas that makes the most sense for this grid of colors
@@ -36,15 +37,24 @@ sizeButton.addEventListener("click", function(e) {
 let topButton = document.getElementById("topButton");
 topButton.addEventListener("click", function(e) {
     e.preventDefault();
+    borderless = !borderless
     // Clear the board but we have the colors saved still
-    drawBoard(num_boxes)
+    clearBoard()
     // just do one loop here and then check top and replace that but erase rest and then clean up by making helpers. NEED TO MAKE A COLOR BOX FUNC
     for (var i = 0; i < num_boxes; i++) {
-        pos = { x: i, y: 0}
-        color_new = gridInfo[0][i]
-        color_square_pos(pos, color_new)
+        for (var j = 0; j < num_boxes; j++) {
+            pos = { x: i, y: j}
+            // i and j flipped coz of how 2D arrays work
+            color_new = gridInfo[j][i]
+            color_square_pos(pos, color_new)
+        }
     }
-    gridInfo = initialize_gridInfo(num_boxes); // remove as this deletes all. 
+    if (borderless) {
+        drawBoardBordersOnly(num_boxes)
+    }
+    else {
+        drawBoard(num_boxes)
+    }
   });
 
 
@@ -54,7 +64,6 @@ function color_square_coords(coords) {
     // Subtract off the padding as the grid doesn't start at (0,0), it starts at (10,10)
     coords[0] -= padding
     coords[1] -= padding
-
     // Check if mouse is outside grid but still on canvas
     if ((coords[0] < 0) || (coords[1] < 0)) {
         return;
@@ -71,14 +80,27 @@ function color_square_coords(coords) {
     block_y = block_index_y * box_size
     // Here we can draw the rectange
     // Padding for each box. We add some decimal amount as it shouldn't overlap with the grid
-    const p_box = padding + 0.6
-    const b_size = box_size - 0.1
+    p_box = padding + 0.6
+    b_size = box_size - 0.1
+    // Need to play with the padding a bit due to no borders
+    if (borderless) {
+        p_box += 0.1
+        b_size -= 1.3
+    }
     context.beginPath();
     context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
     context.fillStyle = color;
     context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = "black";
+    // Here we check if the user wants borderless canvas or not
+    // If they don't want borders, we just set it to the color of the square itself
+    if (borderless) {
+        context.lineWidth = 1.4;
+        context.strokeStyle = color;
+    }
+    else {
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+    }   
     context.stroke();
 }
 
@@ -86,7 +108,6 @@ function color_square_coords(coords) {
 // This function colors a square based on given block number or position of the box instead of coords as done in color_square_coords
 function color_square_pos(position, color) {
     var box_size = bw / num_boxes
-    console.log(position.x)
     block_x = position.x * box_size
     block_y = position.y * box_size
     // Here we can draw the rectange
@@ -97,26 +118,84 @@ function color_square_pos(position, color) {
     context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
     context.fillStyle = color;
     context.fill();
-    context.lineWidth = 1;
-    context.strokeStyle = "black";
+    // Here we check if the user wants borderless canvas or not
+    // If they don't want borders, we just set it to the color of the square itself
+    if (borderless) {
+        context.lineWidth = 1.4;
+        context.strokeStyle = color;
+    }
+    else {
+        context.lineWidth = 1;
+        context.strokeStyle = "black";
+    }
     context.stroke();
 }
 
-// This function will draw the grid
+// This function will draw the grid.
 function drawBoard(number_of_boxes){
-    context.clearRect(0, 0, canvas.width, canvas.height);
     var box_size_px = bw / number_of_boxes
-    // The plus one for the middle conditions is to deal with any rounding issues and sorts
     context.beginPath();
-    for (var x = 0; x <= bw+1; x += box_size_px) {
+    // The plus one for the middle conditions is to deal with any rounding issues and sorts
+    for (var x = 0; x <= bw + 1; x += box_size_px) {
         context.moveTo(0.5 + x + padding, padding);
         context.lineTo(0.5 + x + padding, bh + padding);
     }
-    for (var x = 0; x <= bh+1; x += box_size_px) {
+    for (var x = 0; x <= bh + 1; x += box_size_px) {
         context.moveTo(padding, 0.5 + x + padding);
         context.lineTo(bw + padding, 0.5 + x + padding);
     }
     context.lineWidth = 1.2;
+    context.stroke();
+}
+
+// Clear board
+function clearBoard(){
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Draw left border of board
+// We need this as there is some overlap with the borderless drawing
+// So to avoid an unevenness, we just redraw one side of the border
+function leftBorderBoard(){
+    context.beginPath();
+    context.lineWidth = 1.2;
+    context.moveTo(0.5 + padding, padding);
+    context.lineTo(0.5 + padding, bh + padding);
+    context.strokeStyle = "black";
+    context.stroke();
+}
+
+// Draw Right border of board
+// We need this as there is some overlap with the borderless drawing
+// So to avoid an unevenness, we just redraw one side of the border
+function rightBorderBoard(){
+    context.beginPath();
+    
+    context.moveTo(padding, 0.5 + padding);
+    context.lineTo(bw + padding, 0.5 + padding);
+    context.lineWidth = 1.2;
+    context.strokeStyle = "black";
+    context.stroke();
+}
+
+// This function will draw a black border for borderless coloring
+// Will not clear board
+function drawBoardBordersOnly(number_of_boxes){
+    var box_size_px = bw / number_of_boxes
+    // This gets used in the for loop. Basically, we skip all the middle lines and
+    // only draw the top and bottom edges. Basically drawing two sides of the large square.
+    make_all_boxes = number_of_boxes
+    context.beginPath();
+    // The plus one for the middle conditions is to deal with any rounding issues and sorts
+    for (var x = 0; x <= bw + 1; x += box_size_px * make_all_boxes) {
+        context.moveTo(0.5 + x + padding, padding);
+        context.lineTo(0.5 + x + padding, bh + padding);
+    }
+    for (var x = 0; x <= bh + 1; x += box_size_px * make_all_boxes) {
+        context.moveTo(padding, 0.5 + x + padding);
+        context.lineTo(bw + padding, 0.5 + x + padding);
+    }
+    context.lineWidth = 1;
     context.strokeStyle = "black";
     context.stroke();
 }
@@ -135,6 +214,10 @@ var setIntervalId = setInterval(function() {
         // Now we store the box info into a grid array for later use
         // It is flipped due to how 2D arrays work
         gridInfo[block_index_y][block_index_x] = color;
+        // Redraw the border to avoid overlaps.
+        if (borderless) {
+            drawBoardBordersOnly(num_boxes)
+        }
     }
     
 }, 25); // 25 is the wait time between each event in ms
