@@ -1,9 +1,9 @@
 // Height n Width are fixed. Box sizing will change for more boxes
 // Box width
-var bw = 600;
+const bw = 600;
 // Box height
-var bh = 600;
-var padding = 10;
+const bh = 600;
+const padding = 10;
 // Default for starting number of boxes
 var num_boxes = 15;
 // Variables for canvas
@@ -153,30 +153,6 @@ function clearBoard(){
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// Draw left border of board
-// We need this as there is some overlap with the borderless drawing
-// So to avoid an unevenness, we just redraw one side of the border
-function leftBorderBoard(){
-    context.beginPath();
-    context.lineWidth = 1.2;
-    context.moveTo(0.5 + padding, padding);
-    context.lineTo(0.5 + padding, bh + padding);
-    context.strokeStyle = "black";
-    context.stroke();
-}
-
-// Draw Right border of board
-// We need this as there is some overlap with the borderless drawing
-// So to avoid an unevenness, we just redraw one side of the border
-function rightBorderBoard(){
-    context.beginPath();
-    
-    context.moveTo(padding, 0.5 + padding);
-    context.lineTo(bw + padding, 0.5 + padding);
-    context.lineWidth = 1.2;
-    context.strokeStyle = "black";
-    context.stroke();
-}
 
 // This function will draw a black border for borderless coloring
 // Will not clear board
@@ -281,7 +257,13 @@ function changeGridSize(e) {
     } 
     else {
         num_boxes = boxes.value
-        drawBoard(num_boxes)
+        clearBoard()
+        if (borderless) {
+            drawBoardBordersOnly(num_boxes)
+        }
+        else {
+            drawBoard(num_boxes)
+        }
         gridInfo = initialize_gridInfo(num_boxes);
     }
 }
