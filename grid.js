@@ -46,7 +46,11 @@ topButton.addEventListener("click", function(e) {
             pos = { x: i, y: j}
             // i and j flipped coz of how 2D arrays work
             color_new = gridInfo[j][i]
-            color_square_pos(pos, color_new)
+            // We only color if it isn't white
+            if (color_new != "#FFFFFF") {
+                color_square_pos(pos, color_new)
+            }
+            
         }
     }
     if (borderless) {
@@ -73,19 +77,19 @@ function color_square_coords(coords) {
     }
     // First we get the position of where the mouse is and on which block
     // To do this, we just use some simple math and geometry
-    var box_size = bw / num_boxes
-    block_index_x = Math.floor(coords[0] / box_size)
-    block_index_y = Math.floor(coords[1] / box_size)
-    block_x = block_index_x * box_size
-    block_y = block_index_y * box_size
+    let box_size = bw / num_boxes
+    let block_index_x = Math.floor(coords[0] / box_size)
+    let block_index_y = Math.floor(coords[1] / box_size)
+    let block_x = block_index_x * box_size
+    let block_y = block_index_y * box_size
     // Here we can draw the rectange
     // Padding for each box. We add some decimal amount as it shouldn't overlap with the grid
-    p_box = padding + 0.6
-    b_size = box_size - 0.1
-    // Need to play with the padding a bit due to no borders
+    let p_box = padding + 0.6
+    let b_size = box_size - 0.1
+    // As there is no border, we need to adjust the size and position a bit
     if (borderless) {
-        p_box += 0.1
-        b_size -= 1.3
+        p_box += 1
+        b_size -= 1
     }
     context.beginPath();
     context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
@@ -94,7 +98,7 @@ function color_square_coords(coords) {
     // Here we check if the user wants borderless canvas or not
     // If they don't want borders, we just set it to the color of the square itself
     if (borderless) {
-        context.lineWidth = 1.4;
+        context.lineWidth = 1;
         context.strokeStyle = color;
     }
     else {
@@ -107,9 +111,9 @@ function color_square_coords(coords) {
 
 // This function colors a square based on given block number or position of the box instead of coords as done in color_square_coords
 function color_square_pos(position, color) {
-    var box_size = bw / num_boxes
-    block_x = position.x * box_size
-    block_y = position.y * box_size
+    let box_size = bw / num_boxes
+    let block_x = position.x * box_size
+    let block_y = position.y * box_size
     // Here we can draw the rectange
     // Padding for each box. We add some decimal amount as it shouldn't overlap with the grid
     const p_box = padding + 0.6
@@ -121,7 +125,7 @@ function color_square_pos(position, color) {
     // Here we check if the user wants borderless canvas or not
     // If they don't want borders, we just set it to the color of the square itself
     if (borderless) {
-        context.lineWidth = 1.4;
+        context.lineWidth = 1;
         context.strokeStyle = color;
     }
     else {
@@ -163,6 +167,7 @@ function drawBoardBordersOnly(number_of_boxes){
     make_all_boxes = number_of_boxes
     context.beginPath();
     // The plus one for the middle conditions is to deal with any rounding issues and sorts
+    // This one does left and right lines
     for (var x = 0; x <= bw + 1; x += box_size_px * make_all_boxes) {
         context.moveTo(0.5 + x + padding, padding);
         context.lineTo(0.5 + x + padding, bh + padding);
@@ -189,6 +194,9 @@ var setIntervalId = setInterval(function() {
         color_square_coords(coords)
         // Now we store the box info into a grid array for later use
         // It is flipped due to how 2D arrays work
+        let box_size = bw / num_boxes
+        let block_index_x = Math.floor(coords[0] / box_size)
+        let block_index_y = Math.floor(coords[1] / box_size)
         gridInfo[block_index_y][block_index_x] = color;
         // Redraw the border to avoid overlaps.
         if (borderless) {
@@ -196,7 +204,7 @@ var setIntervalId = setInterval(function() {
         }
     }
     
-}, 25); // 25 is the wait time between each event in ms
+}, 1); // 1 is the wait time between each event in ms
 }
 
 // All these mouse functions deal with checking if the mouse is pressed down
