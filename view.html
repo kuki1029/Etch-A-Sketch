@@ -31,20 +31,19 @@
       </button>
       <button type="button" class="btn btn-outline-dark mx-2 my-1">Eraser</button>
       <button type="button" class="btn btn-outline-dark mx-2 my-1">Clear</button>
-      <button type="button" id="topButton" class="btn btn-outline-dark mx-2 my-1">Top</button>
-        <button class="btn btn-outline-dark mx-2 my-1 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-outline-dark mx-2 my-1 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           More
-        </button>
+      </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <!-- Modal for size -->
           <li><a aria-pressed="true" data-bs-toggle="modal" data-bs-target="#sizeModal" class="dropdown-item" href="#">Size</a></li>
-          <li><a class="dropdown-item" href="#">Borderless</a></li>
+          <li><a class="dropdown-item" id="borderlessButton" href="#">Borderless</a></li>
           <li><a class="dropdown-item" href="#">Save</a></li>
           <li><a class="dropdown-item" href="#">Help</a></li>
           <!-- Change text if already logged in -->
           <li><a data-bs-toggle="modal" data-bs-target="#loginModal" class="dropdown-item" href="#">Login</a></li>
         </ul>
-    </div>
+      </div>
   </div>
 
   <!-- This is the main drawing grid itself. -->

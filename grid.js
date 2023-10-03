@@ -34,8 +34,8 @@ sizeButton.addEventListener("click", function(e) {
   });
 
 // Here we add logic for the size modal
-let topButton = document.getElementById("topButton");
-topButton.addEventListener("click", function(e) {
+let borderlessButton = document.getElementById("borderlessButton");
+borderlessButton.addEventListener("click", function(e) {
     e.preventDefault();
     borderless = !borderless
     // Clear the board but we have the colors saved still
