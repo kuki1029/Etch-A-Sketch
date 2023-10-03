@@ -35,6 +35,12 @@ sizeButton.addEventListener("click", function(e) {
     changeGridSize(e)
   });
 
+// Here we add logic for the black button which changes color to black
+let blackButton = document.getElementById("blackButton");
+blackButton.addEventListener("click", function() {
+    color = "black"
+});
+
 // Here we add logic for the size modal
 let borderlessButton = document.getElementById("borderlessButton");
 borderlessButton.addEventListener("click", function(e) {
