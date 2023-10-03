@@ -11,6 +11,8 @@ var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 var color = "#000000"
 var borderless = false;
+// We draw each block multiple times to fill in any spaces
+const number_of_draws = 4
 
 // Stores all the color values for the grid so we can save in DB or update screen
 // This will be a 2D array aas that makes the most sense for this grid of colors
@@ -116,12 +118,20 @@ function color_square_pos(position, color) {
     let block_y = position.y * box_size
     // Here we can draw the rectange
     // Padding for each box. We add some decimal amount as it shouldn't overlap with the grid
-    const p_box = padding + 0.6
-    const b_size = box_size - 0.1
-    context.beginPath();
-    context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
-    context.fillStyle = color;
-    context.fill();
+    let p_box = padding + 0.6
+    let b_size = box_size - 0.1
+    // As there is no border, we need to adjust the size and position a bit
+    if (borderless) {
+        p_box += 1
+        b_size -= 1
+    }
+    // Redraw it multiple times for better clarity
+    for (var x = 0; x <= number_of_draws; x += 1) {
+        context.beginPath();
+        context.rect(p_box + block_x, p_box + block_y, b_size, b_size);
+        context.fillStyle = color;
+        context.fill();
+    }    
     // Here we check if the user wants borderless canvas or not
     // If they don't want borders, we just set it to the color of the square itself
     if (borderless) {
