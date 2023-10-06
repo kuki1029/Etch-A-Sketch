@@ -5,18 +5,21 @@ const bw = 600;
 const bh = 600;
 const padding = 10;
 // Default for starting number of boxes
-var num_boxes = 15;
+let num_boxes = 15;
 // Variables for canvas
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var color = "#000000"
-var borderless = false;
+let canvas = document.getElementById("canvas");
+let context = canvas.getContext("2d");
+let color = "#000000"
+// We are using HSL format for colors. This represent the deg
+let currentRainbowDeg = 0
+let rainbowMode = false
+let borderless = false;
 // We draw each block multiple times to fill in any spaces
 const number_of_draws = 4
 
 // Stores all the color values for the grid so we can save in DB or update screen
 // This will be a 2D array aas that makes the most sense for this grid of colors
-var gridInfo = initialize_gridInfo(num_boxes);
+let gridInfo = initialize_gridInfo(num_boxes);
 
 drawBoard(num_boxes);
 
@@ -25,8 +28,8 @@ drawBoard(num_boxes);
 var backRGB = document.getElementById("color").value;
 // When color changes, will update the appropriate variable
 document.getElementById("color").onchange = function() {
-  backRGB = this.value;
-  color = backRGB;
+  rainbowMode = false
+  color = this.value;
 }
 
 // Here we add logic for the size modal
@@ -35,10 +38,40 @@ sizeButton.addEventListener("click", function(e) {
     changeGridSize(e)
   });
 
+// Here we add logic for the erase button
+let eraserButton = document.getElementById("eraserButton");
+eraserButton.addEventListener("click", function() {
+    rainbowMode = false
+    color = "white"
+  });
+
+// Here we add logic for the clear button
+let clearButton = document.getElementById("clearButton");
+clearButton.addEventListener("click", function() {
+    if(confirm("Are you sure you want to clear the board?")) {
+        clearBoard()
+        gridInfo = initialize_gridInfo(num_boxes)
+        if (borderless) {
+            drawBoardBordersOnly(num_boxes)
+        }
+        else {
+            drawBoard(num_boxes)
+        }
+    } 
+});  
+
 // Here we add logic for the black button which changes color to black
 let blackButton = document.getElementById("blackButton");
 blackButton.addEventListener("click", function() {
+    rainbowMode = false
     color = "black"
+});
+
+// Here we add logic for the rainbow button which cycles through colors
+let rainbowButton = document.getElementById("rainbowButton");
+rainbowButton.addEventListener("click", function() {
+    rainbowMode = true
+    color = currentRainbowDeg
 });
 
 // Here we add logic for the size modal
@@ -207,6 +240,10 @@ var setIntervalId = setInterval(function() {
     if (!holding) clearInterval(setIntervalId);
     if (holding) {
         coords = getCursorPosition(mousePosition)
+        // If rainbow mode, we need to change the color here
+        if (rainbowMode) {
+            changeRainbowColor()
+        }
         color_square_coords(coords)
         // Now we store the box info into a grid array for later use
         // It is flipped due to how 2D arrays work
@@ -290,4 +327,14 @@ function changeGridSize(e) {
         }
         gridInfo = initialize_gridInfo(num_boxes);
     }
+}
+
+// Edits the currentRainbowDeg to increase by some amout so that
+// rainbow colors can be displayed
+function changeRainbowColor() {
+    currentRainbowDeg += 0.5
+    if (currentRainbowDeg >= 360) {
+        currentRainbowDeg = 0
+    }
+    color = "hsl(" + (currentRainbowDeg) + "deg, 100%, 50%)"
 }
