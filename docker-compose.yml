@@ -1,0 +1,9 @@
+services:
+  # Container for our Go Fiber Web App
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    command: go run main.go -b 0.0.0.0
