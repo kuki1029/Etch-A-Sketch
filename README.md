@@ -1,5 +1,5 @@
 # Etch-A-Sketch
-A simple Golang project that mimics a real life Etch-A-Sketch. The user has ability yo draw, change colors, change the size of the squares, make it borderless, 
+A simple Golang project that mimics a real life Etch-A-Sketch. The user has ability to draw, change colors, change the size of the squares, make it borderless, 
 and even save drawings to their accounts. 
 
 **How to Run:**
