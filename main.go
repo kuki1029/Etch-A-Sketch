@@ -47,7 +47,7 @@ func main() {
 	}()
 
 	// Start listening on the specified address
-	if err := app.Listen("127.0.0.1:3000"); err != nil {
+	if err := app.Listen("0.0.0.0:3000"); err != nil {
 		log.Panic(err)
 	}
 }

@@ -1,10 +1,11 @@
-version: '3.8'
-
+version: "3.8"
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - 3000:3000
+    # Important to bind/mount your codebase dir to /app dir for live reload
     volumes:
-      - .:/usr/src/app
-    command: go run main.go -b 0.0.0.0
+      - ./:/app
