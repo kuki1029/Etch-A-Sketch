@@ -5,6 +5,7 @@ go 1.21.2
 require github.com/gofiber/fiber/v2 v2.49.2
 
 require (
+	github.com/alexedwards/argon2id v1.0.0 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/gofiber/fiber v1.14.6 // indirect
 	github.com/gofiber/template v1.8.2 // indirect
