@@ -8,7 +8,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 
+	"Etch_A_Sketch/app/controller"
 	"Etch_A_Sketch/app/repo"
+	"Etch_A_Sketch/routes"
 )
 
 // Stop the Fiber application
@@ -50,7 +52,12 @@ func main() {
 
 	// Setup database
 	db := repo.ConnectToDB()
-	log.Print((db))
+
+	// Setup controller
+	userController := controller.NewUserController(db)
+
+	// Setup routes
+	routes.SetupUserRoutes(app, userController)
 
 	// Start listening on the specified address
 	if err := app.Listen("0.0.0.0:3000"); err != nil {
