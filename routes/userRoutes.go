@@ -8,7 +8,10 @@ import (
 
 // This function will create all the needed routes for our different pages
 func SetupUserRoutes(app *fiber.App, userController *controller.UserController) {
-	// Signup page for user
+	// Signup route for user
 	app.Post("/signup", userController.Signup)
+	// Login route for user
+	app.Post("/login", userController.Login)
+
 
 }
