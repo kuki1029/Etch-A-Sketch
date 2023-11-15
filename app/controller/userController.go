@@ -4,6 +4,7 @@ import (
 	"Etch_A_Sketch/app/models"
 	"Etch_A_Sketch/app/repo"
 	password "Etch_A_Sketch/app/utils"
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -34,7 +35,7 @@ func (controller *UserController) Signup(c *fiber.Ctx) error {
 	}
 
 	err = repo.CheckUserExists(credentials, controller.db)
-	if (err == nil) {
+	if err == nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"success": false,
 			"message": "User already exists. Please login or try again.",
@@ -66,25 +67,28 @@ func (controller *UserController) Login(c *fiber.Ctx) error {
 	if err != nil {
 		log.Printf("Error parsing credentials")
 	}
-
 	// See if the email even exists in our DB
 	err = repo.CheckUserExists(credentials, controller.db)
-	if (err != nil) {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"success": false,
 			"message": "Incorrect password or account does not exist. Please create an account to login.",
 		})
 	}
 	// Check if password matches in database
 	passMatch := repo.AuthenticateUser(credentials, controller.db)
-	if (passMatch) {
+	if passMatch {
 		// TODO: Add cookies and caching
+		fmt.Println("match")
+
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"success": true,
-			"message": "Account succesfully created.",
+			"message": "Successfully logged in.",
 		})
 	} else {
-		return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		fmt.Println("notmatch")
+
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"success": false,
 			"message": "Incorrect password or account does not exist. Please try again.",
 		})

@@ -23,7 +23,7 @@ func AddUser(userInfo models.User, db *gorm.DB) error {
 // Does not do any hashing. Returns true if user exists.
 func CheckUserExists(userInfo models.User, db *gorm.DB) error {
 	var userCreate models.User
-	err := db.Where("email = ?", userInfo.Name).First(&userCreate).Error
+	err := db.Where("name = ?", userInfo.Name).First(&userCreate).Error
 	return err
 }
 
@@ -32,8 +32,10 @@ func CheckUserExists(userInfo models.User, db *gorm.DB) error {
 func AuthenticateUser(userInfo models.User, db *gorm.DB) bool {
 	var userPass models.User
 	// Find the users original password
-	err := db.Where("email = ?", userInfo.Name).First(&userPass).Error
-	if (err != nil) {return false}
+	err := db.Where("name = ?", userInfo.Name).First(&userPass).Error
+	if err != nil {
+		return false
+	}
 	// Hash the plain text password
 	hashedPass := password.Generate(userInfo.Password)
 	passwordMatch := password.Verify(userPass.Password, hashedPass)

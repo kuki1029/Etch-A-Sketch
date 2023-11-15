@@ -24,9 +24,13 @@ function signupButton() {
             }
             // Now we can fetch
             fetch ("/signup", fetchData)
+            // Need to get the json from the response
+            .then(resposne => {
+                return resposne.json();
+            })
             .then(result => {
                 if (result.success) {
-                    // TODO: Take to account page
+                    // TODO: Switch to login modal
                     location.reload()
                 }
                 else {
@@ -41,4 +45,45 @@ function signupButton() {
             // TODO: Send proper error to FE
             window.alert("Passwords do not match. Please try again.")
         }
+}
+/*
+    Obtains all the parameters from the form and sends it to the backend by fetching
+    the api call. Also updates page for user accordingly. TODO: Update user page to account dashboard
+*/
+function loginButton() {
+    // Obtains values from HTML
+    var username = document.getElementById("loginUsername").value
+    var pass = document.getElementById("loginPassword").value
+
+    let loginData = {
+        Name: username,
+        Password: pass
+    }
+    let fetchData = {
+        method: "POST",
+        // Converts to JSON string
+        body: JSON.stringify(loginData),
+        headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8'
+        })
+    }
+    // Now we can fetch
+    fetch ("/login", fetchData)
+    // Need to get the json from the response
+    .then(resposne => {
+        return resposne.json();
+      })
+    .then(result => {
+        if (result.success) {
+            // TODO: Close modal
+        }
+        else {
+            // TODO: Add proper FE errors
+            window.alert(result.message)
+        }
+    })
+    .catch(error => {
+        window.alert(error.message)
+    })
+
 }

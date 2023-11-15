@@ -22,9 +22,7 @@ services:
     # Named volume which keeps data persistent
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # Remove default logging if adding your own later on
-    logging:
-      driver: none
+
     # Naming for visual reasons
     container_name: database
 
