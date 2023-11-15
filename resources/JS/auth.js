@@ -3,6 +3,7 @@
     the api call. Also updates page for user accordingly. TODO: Update user page to account dashboard
 */
 function signupButton() {
+    console.log("test")
         // Obtains values from HTML
         var username = document.getElementById("username").value
         var pass = document.getElementById("password").value
@@ -67,6 +68,7 @@ function loginButton() {
             'Content-Type': 'application/json; charset=UTF-8'
         })
     }
+    console.log("ss")
     // Now we can fetch
     fetch ("/login", fetchData)
     // Need to get the json from the response
@@ -75,6 +77,7 @@ function loginButton() {
       })
     .then(result => {
         if (result.success) {
+            console.log("test")
             // TODO: Close modal
         }
         else {
@@ -87,3 +90,5 @@ function loginButton() {
     })
 
 }
+
+console.log("Sfffff")
