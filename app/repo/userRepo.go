@@ -36,8 +36,7 @@ func AuthenticateUser(userInfo models.User, db *gorm.DB) bool {
 	if err != nil {
 		return false
 	}
-	// Hash the plain text password
-	hashedPass := password.Generate(userInfo.Password)
-	passwordMatch := password.Verify(userPass.Password, hashedPass)
+	// Verify takes in plain text and hash
+	passwordMatch := password.Verify(userInfo.Password, userPass.Password)
 	return passwordMatch
 }

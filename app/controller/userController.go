@@ -4,7 +4,6 @@ import (
 	"Etch_A_Sketch/app/models"
 	"Etch_A_Sketch/app/repo"
 	password "Etch_A_Sketch/app/utils"
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -79,15 +78,11 @@ func (controller *UserController) Login(c *fiber.Ctx) error {
 	passMatch := repo.AuthenticateUser(credentials, controller.db)
 	if passMatch {
 		// TODO: Add cookies and caching
-		fmt.Println("match")
-
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"success": true,
 			"message": "Successfully logged in.",
 		})
 	} else {
-		fmt.Println("notmatch")
-
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"success": false,
 			"message": "Incorrect password or account does not exist. Please try again.",

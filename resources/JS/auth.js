@@ -68,7 +68,6 @@ function loginButton() {
             'Content-Type': 'application/json; charset=UTF-8'
         })
     }
-    console.log("ss")
     // Now we can fetch
     fetch ("/login", fetchData)
     // Need to get the json from the response
@@ -77,8 +76,7 @@ function loginButton() {
       })
     .then(result => {
         if (result.success) {
-            console.log("test")
-            // TODO: Close modal
+            $('#loginModal').modal('hide');
         }
         else {
             // TODO: Add proper FE errors
@@ -91,4 +89,4 @@ function loginButton() {
 
 }
 
-console.log("Sfffff")
+console.log("123")
