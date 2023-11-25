@@ -76,17 +76,21 @@ function loginButton() {
       })
     .then(result => {
         if (result.success) {
+            // Hides the login modal on successful signup
             $('#loginModal').modal('hide');
         }
         else {
             // TODO: Add proper FE errors
-            window.alert(result.message)
+            console.log(result.error)
+            window.alert("Incorrect password or username. Please try again.")
         }
     })
     .catch(error => {
-        window.alert(error.message)
+        window.alert("Error with the website. Please try again.")
+
+        console.log(error.message)
     })
 
 }
 
-console.log("123")
+console.log("343")

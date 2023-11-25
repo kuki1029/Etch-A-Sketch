@@ -5,8 +5,10 @@ import (
 	"Etch_A_Sketch/app/repo"
 	password "Etch_A_Sketch/app/utils"
 	"log"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -78,6 +80,8 @@ func (controller *UserController) Login(c *fiber.Ctx) error {
 	passMatch := repo.AuthenticateUser(credentials, controller.db)
 	if passMatch {
 		// TODO: Add cookies and caching
+		// To be able to identify this user on other pages, we need to create a cookie for their browser
+		_ = setCookie(c, "sessionKey", uuid.NewString(), 24)
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{
 			"success": true,
 			"message": "Successfully logged in.",
@@ -88,5 +92,15 @@ func (controller *UserController) Login(c *fiber.Ctx) error {
 			"message": "Incorrect password or account does not exist. Please try again.",
 		})
 	}
+}
 
+// This function will take in parameters for the cookie and set them to the fiber context
+func setCookie(ctx *fiber.Ctx, name string, value string, timeAmt time.Duration) *fiber.Cookie {
+	cookie := new(fiber.Cookie)
+	cookie.Name = name
+	// We generate a random key to store in the cookie value. Also stored in redis cache
+	cookie.Value = value
+	cookie.Expires = time.Now().Add(timeAmt * time.Hour)
+	ctx.Cookie(cookie)
+	return cookie
 }
