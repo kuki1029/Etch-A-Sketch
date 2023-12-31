@@ -9,6 +9,7 @@ import (
 	"github.com/gofiber/template/html/v2"
 
 	"Etch_A_Sketch/app/controller"
+	"Etch_A_Sketch/app/middleware"
 	"Etch_A_Sketch/app/repo"
 	"Etch_A_Sketch/routes"
 )
@@ -53,8 +54,12 @@ func main() {
 	// Setup database
 	db := repo.ConnectToDB()
 
+	// Setup redis cache
+	redisClient := middleware.NewRedisClient()
+	middleware.Ping(redisClient)
+
 	// Setup controller
-	userController := controller.NewUserController(db)
+	userController := controller.NewUserController(db, redisClient)
 
 	// Setup routes
 	routes.SetupUserRoutes(app, userController)

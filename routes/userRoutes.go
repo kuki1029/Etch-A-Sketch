@@ -12,6 +12,6 @@ func SetupUserRoutes(app *fiber.App, userController *controller.UserController) 
 	app.Post("/signup", userController.Signup)
 	// Login route for user
 	app.Post("/login", userController.Login)
-
-
+	// GetUser to see if they have any stored cookies
+	app.Get("/me", userController.GetUser)
 }

@@ -1,3 +1,23 @@
+// test logic
+let saveButton = document.getElementById("saveButton");
+console.log(saveButton)
+saveButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    fetch ("/me")
+    // Need to get the json from the response
+    .then(response => {
+        return response.json();
+    })
+    .then(result => {
+        // If the user is loggedIn from before, we can update elements appropriately
+        console.log(result.loggedIn)
+    })
+    .catch(error => {
+        console.log(error.message)
+        window.alert("There was an error with the website. Please try again.")
+    })
+});
+
 /*
     Obtains all the parameters from the form and sends it to the backend by fetching
     the api call. Also updates page for user accordingly. TODO: Update user page to account dashboard
@@ -26,8 +46,8 @@ function signupButton() {
             // Now we can fetch
             fetch ("/signup", fetchData)
             // Need to get the json from the response
-            .then(resposne => {
-                return resposne.json();
+            .then(response => {
+                return response.json();
             })
             .then(result => {
                 if (result.success) {
@@ -71,8 +91,8 @@ function loginButton() {
     // Now we can fetch
     fetch ("/login", fetchData)
     // Need to get the json from the response
-    .then(resposne => {
-        return resposne.json();
+    .then(response => {
+        return response.json();
       })
     .then(result => {
         if (result.success) {
@@ -81,7 +101,7 @@ function loginButton() {
         }
         else {
             // TODO: Add proper FE errors
-            console.log(result.error)
+            console.log(result)
             window.alert("Incorrect password or username. Please try again.")
         }
     })

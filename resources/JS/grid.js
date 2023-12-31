@@ -36,7 +36,7 @@ document.getElementById("color").onchange = function() {
 let sizeButton = document.getElementById("sizeButton");
 sizeButton.addEventListener("click", function(e) {
     changeGridSize(e)
-  });
+});
 
 // Here we add logic for the erase button
 let eraserButton = document.getElementById("eraserButton");

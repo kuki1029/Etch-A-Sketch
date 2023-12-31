@@ -10,9 +10,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="../../static/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
-  <script src="../JS/auth.js"></script>
-
 </head>
 <body>
 
@@ -41,7 +38,7 @@
           <!-- Modal for size -->
           <li><a aria-pressed="true" data-bs-toggle="modal" data-bs-target="#sizeModal" class="dropdown-item" href="#">Size</a></li>
           <li><a class="dropdown-item" id="borderlessButton" href="#">Borderless</a></li>
-          <li><a class="dropdown-item" href="#">Save</a></li>
+          <li><a class="dropdown-item" id="saveButton" href="#">Save</a></li>
           <li><a class="dropdown-item" href="#">Help</a></li>
           <!-- Change text if already logged in -->
           <li><a data-bs-toggle="modal" data-bs-target="#loginModal" class="dropdown-item" href="#">Login</a></li>
@@ -158,5 +155,7 @@
 </div>
 
 </body>
+<script src="../JS/auth.js"></script>
+
 <script src="../JS/grid.js"></script>
 </html>
